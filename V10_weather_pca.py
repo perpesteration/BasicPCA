@@ -220,3 +220,38 @@ cum_percentage = 100*cumsum_eigen/sum_eigen
 for i in range(PCAcomponents):
     print("{:4}{:8}{:8}{:10}{:12}{:7}".format("PC","g_a","V_a","Cum G_a","RSS_a","RMSE_a"))
     print("{:<4}{:5.2f}{:7.2f}{:>10.2f}{:9.2f}{:12.3f}".format(i+1,eigenvalues[i],v[i],cum_percentage[i],RSS[i],RMSE[i]))
+# Extra section for reporting the maximum and minimum values of PM readings:
+print("")
+data_19 = df[df['location'] == 'Level 19']
+data_16 = df[df['location'] == 'Level 16']
+data_8 = df[df['location'] == 'Level 8']
+
+npdata_19 = pd.DataFrame(data_19).to_numpy()
+npdata_16 = pd.DataFrame(data_16).to_numpy()
+npdata_8 = pd.DataFrame(data_8).to_numpy()
+
+PM_of_interest = ['PM2.5','PM10']
+
+for i in range(2):
+    maximumPM = data_19[data_19[PM_of_interest[i]] == data_19[PM_of_interest[i]].max()]
+    maximumPM = maximumPM.iloc[0][PM_of_interest[i]]
+    print("The maximum {} value for Level 19 is: {} ug/m3.".format(PM_of_interest[i],maximumPM))
+    minimumPM = data_19[data_19[PM_of_interest[i]] == data_19[PM_of_interest[i]].min()]
+    minimumPM = minimumPM.iloc[0][PM_of_interest[i]]
+    print("The minimum {} value for Level 19 is: {} ug/m3.".format(PM_of_interest[i],minimumPM))
+print("")
+for i in range(2):
+    maximumPM = data_16[data_16[PM_of_interest[i]] == data_16[PM_of_interest[i]].max()]
+    maximumPM = maximumPM.iloc[0][PM_of_interest[i]]
+    print("The maximum {} value for Level 16 is: {} ug/m3.".format(PM_of_interest[i],maximumPM))
+    minimumPM = data_16[data_16[PM_of_interest[i]] == data_16[PM_of_interest[i]].min()]
+    minimumPM = minimumPM.iloc[0][PM_of_interest[i]]
+    print("The minimum {} value for Level 16 is: {} ug/m3.".format(PM_of_interest[i],minimumPM))
+print("")
+for i in range(2):
+    maximumPM = data_8[data_8[PM_of_interest[i]] == data_8[PM_of_interest[i]].max()]
+    maximumPM = maximumPM.iloc[0][PM_of_interest[i]]
+    print("The maximum {} value for Level 8 is: {} ug/m3.".format(PM_of_interest[i],maximumPM))
+    minimumPM = data_8[data_8[PM_of_interest[i]] == data_8[PM_of_interest[i]].min()]
+    minimumPM = minimumPM.iloc[0][PM_of_interest[i]]
+    print("The minimum {} value for Level 8 is: {} ug/m3.".format(PM_of_interest[i],minimumPM))
