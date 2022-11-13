@@ -218,10 +218,10 @@ for i in range(len(eigenvalues)):
 # For reporting the relative cumulative eigenvalue:
 cum_percentage = 100*cumsum_eigen/sum_eigen
 for i in range(PCAcomponents):
-    print("{:4}{:8}{:8}{:10}{:12}{:7}".format("PC","g_a","V_a","Cum G_a","RSS_a","RMSE_a"))
-    print("{:<4}{:5.2f}{:7.2f}{:>10.2f}{:9.2f}{:12.3f}".format(i+1,eigenvalues[i],v[i],cum_percentage[i],RSS[i],RMSE[i]))
+    print("{:4}{:8}{:8}{:10}{:10}{:7}".format("PC","g_a","V_a","Cum G_a","RSS_a","RMSE_a"))
+    print("{:<4}{:5.5g}{:>7.4g}{:>10.4g}{:>9.5g}{:>10.3g}".format(i+1,eigenvalues[i],v[i],cum_percentage[i],RSS[i],RMSE[i]))
+
 # Extra section for reporting the maximum and minimum values of PM readings:
-print("")
 data_19 = df[df['location'] == 'Level 19']
 data_16 = df[df['location'] == 'Level 16']
 data_8 = df[df['location'] == 'Level 8']
@@ -232,26 +232,54 @@ npdata_8 = pd.DataFrame(data_8).to_numpy()
 
 PM_of_interest = ['PM2.5','PM10']
 
+# For 'Normal' Category
+upper_limit_24hrPMreadings = [12,50] #c(i+1)
+lower_limit_24hrPMreadings = [0,0]  #ci
+psi_upperlimit = 50 #bi+1
+psi_lowerlimit = 0 #b
+print("\n")
+maximumPM_arr = []
+# Report maximum and minimum PM values
 for i in range(2):
     maximumPM = data_19[data_19[PM_of_interest[i]] == data_19[PM_of_interest[i]].max()]
     maximumPM = maximumPM.iloc[0][PM_of_interest[i]]
+    maximumPM_arr.append(maximumPM) #For IPSI calculation
     print("The maximum {} value for Level 19 is: {} ug/m3.".format(PM_of_interest[i],maximumPM))
     minimumPM = data_19[data_19[PM_of_interest[i]] == data_19[PM_of_interest[i]].min()]
     minimumPM = minimumPM.iloc[0][PM_of_interest[i]]
     print("The minimum {} value for Level 19 is: {} ug/m3.".format(PM_of_interest[i],minimumPM))
+# Report PSI values:
+for i in range(2): #This calculates IPSI
+    maximumPM_arr[i] = (((maximumPM_arr[i]-lower_limit_24hrPMreadings[i])/(upper_limit_24hrPMreadings[i]-lower_limit_24hrPMreadings[i]))*(psi_upperlimit-psi_lowerlimit))+psi_lowerlimit #Hardcoded
+PSI = np.max(maximumPM_arr) #This selects PSI 
+print("The PSI for Level 19 is {:.2f}".format(PSI))
 print("")
+maximumPM_arr = [] # reset array
 for i in range(2):
     maximumPM = data_16[data_16[PM_of_interest[i]] == data_16[PM_of_interest[i]].max()]
     maximumPM = maximumPM.iloc[0][PM_of_interest[i]]
+    maximumPM_arr.append(maximumPM) #For IPSI calculation
     print("The maximum {} value for Level 16 is: {} ug/m3.".format(PM_of_interest[i],maximumPM))
     minimumPM = data_16[data_16[PM_of_interest[i]] == data_16[PM_of_interest[i]].min()]
     minimumPM = minimumPM.iloc[0][PM_of_interest[i]]
     print("The minimum {} value for Level 16 is: {} ug/m3.".format(PM_of_interest[i],minimumPM))
+# Report PSI values:
+for i in range(2): #This calculates IPSI
+    maximumPM_arr[i] = (((maximumPM_arr[i]-lower_limit_24hrPMreadings[i])/(upper_limit_24hrPMreadings[i]-lower_limit_24hrPMreadings[i]))*(psi_upperlimit-psi_lowerlimit))+psi_lowerlimit #Hardcoded
+PSI = np.max(maximumPM_arr) #This selects PSI 
+print("The PSI for Level 16 is {:.2f}".format(PSI))
 print("")
+maximumPM_arr = [] # reset array
 for i in range(2):
     maximumPM = data_8[data_8[PM_of_interest[i]] == data_8[PM_of_interest[i]].max()]
     maximumPM = maximumPM.iloc[0][PM_of_interest[i]]
+    maximumPM_arr.append(maximumPM) #For IPSI calculation
     print("The maximum {} value for Level 8 is: {} ug/m3.".format(PM_of_interest[i],maximumPM))
     minimumPM = data_8[data_8[PM_of_interest[i]] == data_8[PM_of_interest[i]].min()]
     minimumPM = minimumPM.iloc[0][PM_of_interest[i]]
     print("The minimum {} value for Level 8 is: {} ug/m3.".format(PM_of_interest[i],minimumPM))
+# Report PSI values:
+for i in range(2): #This calculates IPSI
+    maximumPM_arr[i] = (((maximumPM_arr[i]-lower_limit_24hrPMreadings[i])/(upper_limit_24hrPMreadings[i]-lower_limit_24hrPMreadings[i]))*(psi_upperlimit-psi_lowerlimit))+psi_lowerlimit #Hardcoded
+PSI = np.max(maximumPM_arr) #This selects PSI 
+print("The PSI for Level 8 is {:.2f}".format(PSI))
