@@ -218,11 +218,5 @@ for i in range(len(eigenvalues)):
 # For reporting the relative cumulative eigenvalue:
 cum_percentage = 100*cumsum_eigen/sum_eigen
 for i in range(PCAcomponents):
-    print("------")
-    print("PC{}".format(i+1))
-    print("G_a:{:.2f}".format(eigenvalues[i]))
-    print("V_a:{:.2f}".format(v[i]))
-    print("Cum G_a:{:.2f}".format(cum_percentage[i]))
-    print("RSS:{:.5g}".format(RSS[i]))
-    print("RMSE:{:.3g}".format(RMSE[i]))
-    
+    print("{:4}{:8}{:8}{:10}{:12}{:7}".format("PC","g_a","V_a","Cum G_a","RSS_a","RMSE_a"))
+    print("{:<4}{:5.2f}{:7.2f}{:>10.2f}{:9.2f}{:12.3f}".format(i+1,eigenvalues[i],v[i],cum_percentage[i],RSS[i],RMSE[i]))
